@@ -1,0 +1,56 @@
+ plugins {
+     id "com.android.application"
+     id "kotlin-android"
+     id "dev.flutter.flutter-gradle-plugin"
+ }
+
+ android {
+     namespace = "package_name"
+     compileSdk = 36
+    buildToolsVersion "34.0.0"
+
+     ndkVersion = "27.0.12077973"
+
+     compileOptions {
+         sourceCompatibility = JavaVersion.VERSION_17
+         targetCompatibility = JavaVersion.VERSION_17
+     }
+
+     kotlinOptions {
+         jvmTarget = JavaVersion.VERSION_17
+     }
+
+     defaultConfig {
+         applicationId = "package_name"
+         minSdk = 26
+         targetSdk = 36
+         versionCode = flutter.versionCode
+         versionName = flutter.versionName
+
+         manifestPlaceholders = [            
+             appAuthRedirectScheme: "package_name",
+             applicationName: "appname"
+         ]
+
+        multiDexEnabled true
+     }
+
+     buildTypes {
+         release {
+             signingConfig signingConfigs.debug
+             minifyEnabled false
+             shrinkResources false
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
+
+  
+ }
+
+dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
+
+ flutter {
+     source = "../.."
+ }

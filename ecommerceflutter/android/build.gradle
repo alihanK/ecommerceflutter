@@ -1,0 +1,41 @@
+buildscript {
+    ext.kotlin_version = '1.9.23'
+    repositories {
+        google()
+        mavenCentral()
+}
+
+dependencies {
+    classpath 'com.android.tools.build:gradle:8.4.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+}
+}
+
+rootProject.buildDir = '../build'
+
+subprojects {
+project.buildDir = "${rootProject.buildDir}/${project.name}"
+project.evaluationDependsOn(':app')
+plugins.withId('com.android.library') {
+    extensions.configure(com.android.build.gradle.LibraryExtension) { libExt ->
+        libExt.compileSdk = 36
+        libExt.defaultConfig.targetSdk = 36
+
+        if (libExt.namespace == null || libExt.namespace.trim().isEmpty()) {
+            libExt.namespace = project.group.toString()
+        }
+    }
+
+   project.tasks.withType(com.android.build.gradle.tasks.VerifyLibraryResourcesTask).configureEach {
+        enabled = false
+    }
+}
+}
+
